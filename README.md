@@ -106,6 +106,12 @@ When updating the version of code, the following commands can be used in this or
 ```
 git add --all
 git commit -m "<text>"
+git push origin
+```
+
+The following commands can be used to initiate a release of the code that is already checked in.
+
+```
 git tag <tagname>
 git push origin --tags
 ```
