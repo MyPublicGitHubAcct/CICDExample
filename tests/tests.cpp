@@ -17,5 +17,5 @@ TEST_CASE("square is computed correctly", "[square]")
 {
     REQUIRE(sstruct.square(5) == "25");
     REQUIRE(sstruct.square(6) == "36");
-    REQUIRE(sstruct.square(7) == "40");
+    REQUIRE(sstruct.square(7) == "49");
 }
