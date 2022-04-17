@@ -2,9 +2,9 @@
 
 This project makes a simple HelloWorld command line program that returns a life affirming message. Github Actions are used to build and test the project each time changes are made to files. The Catch2 testing framework is used to provide automated testing ability.
 
-## CI / CD
+## CI / CD Overview
 
-CI/CD can confuse people. When it is talked about, CI is always intended to refer to Continuous Integration. Confusingly CD can mean either Continuous Delivery or Continuous Deployment, but it often means both.
+CI/CD can confuse people. When it is talked about, CI is always intended to refer to *Continuous Integration*. Confusingly CD can mean either *Continuous Delivery* or *Continuous Deployment*, but it often means both. More confusingly, CD is sometimes thought of as part of CI.
 
 * **Continuous Integration** is a process performed to ensure that code is regularly built, tested, and that changes are merged to a shared repository.
 
@@ -14,13 +14,13 @@ CI/CD can confuse people. When it is talked about, CI is always intended to refe
 
 ## But first, let's make it work *locally*
 
-In general practice it is not always necessary to automate these steps locally before using Github Actions. It is done here to show what some steps may look like if done locally first. Deployment will not be done locally.
+In general practice it is not always necessary to automate these steps locally before using Github Actions. It is done here to show what some steps may look like if done locally first. In this example, we will see **Continuous Integration** and **Continuous Delivery** only.
 
-The local version of this system uses Python 3. to run shell scripts cross-platform. In Github Actions, a yaml configuration file will be used to define the steps for building, testing, and deploying (to Github).
+The local version of this system uses Python 3.x scripts to perform the steps cross-platform. If you look closely you will see that, for the most part, the Python scripts are sending native shell commands to each OS for building and testing. In Github Actions, a [yaml](https://yaml.org) configuration file will be used to define the steps for building, testing, and deploying (to Github).
 
 ### 1. Local: Run CMake to build the project files
 
-To build the project files, use the command ```python3 scripts/cmake.py``` for debug or ```python3 scripts/cmake.py r``` for release.  Nija needs to be installed on Linux and Windows.
+To build the project files, use the command ```python3 scripts/cmake.py``` for debug or ```python3 scripts/cmake.py r``` for release.  _Note_: Nija needs to be installed on Linux and Windows.
 
 ### 2. Local: Build the HelloWorld and HelloWorld_tests applications
 
@@ -30,7 +30,7 @@ To build the application files, use the command ```python3 scripts/build.py d```
 
 To test the application, use the command ```python3 scripts/tests.py```.
 
-The first time, there is a test comparing the square root of 7 to 40. This, of course, is wrong. Someone doing Test Driven Development (a.k.a. TDD) may do this intentionally at first to make sure the function meets the author's design with values that both match an expected input type and those that do not. A variation on this is also often done in secure coding practices to give the developer confidence that a function will not provide a bad guy with something they could use in ways undesired by the application's owner.
+The first time, there is a test comparing the square root of 7 to 40. This, of course, is wrong. Someone doing [Test Driven Development](https://en.wikipedia.org/wiki/Test-driven_development) (a.k.a. TDD) may do this intentionally at first to make sure the function meets the author's design with values that both match an expected input type and those that do not. A variation on this is also often done in secure coding practices to give the developer confidence that a function will not provide a bad guy with something they could use in ways undesired by the application's owner.
 
 ![Failure](img/local_tests_fail.png)
 
@@ -38,17 +38,21 @@ Once the expectation in the TEST_CASE has been updated to be the correct expecta
 
 ![Success](img/local_tests_pass.png)
 
+When the applicaiton is run, you get a life affirming message. How nice.
+
+![LifeAffirmingMessage](img/local_run_app.png)
+
 ### 4. Local: Clean the local environment
 
 To remove the built files and the other files used to build them, use the command ```python3 scripts/clean.py```.
 
 ## Now let's make it work *in the cloud* with Github Actions
 
-The steps we did locally above are all configured to be done by Github actions in a [yaml](https://yaml.org) file. It is a configuration file, no matter what the yaml authors would have you believe.
+The steps we did locally above are all configured to be done by Github actions in a yaml file. It is a markup language, no matter what the yaml authors would have you believe.
 
-You can find this file [here](https://github.com/MyPublicGitHubAcct/CICDExample/blob/main/.github/workflows/main.yml), but there are a few things which may be good to know here. 
+You can find this file [here](https://github.com/MyPublicGitHubAcct/CICDExample/blob/main/.github/workflows/main.yml), but there are a few things which may be good to know before reading it. 
 
-First, it runs when changes that are tagged (e.g., v1.0.1) are pushed to the repository (i.e., **CICDExample**). Cool people will call it a 'repo' because they think respository is too hard to say for some reason.  Below is configuration that causes *realeses* to be deployed when the version tag is updated. Though the example above includes numbers, you can use any text as a label.
+First, it runs when tags are updated (e.g., from v1.0.0 to v1.0.1) in the repository (**CICDExample** in this case). Some people will refer to a repository as 'repo' because they think respository is too hard to say for some reason. Below is configuration that causes *releases* to be deployed when the version tag is updated.
 
 ```
 on:
@@ -57,7 +61,7 @@ on:
       - "*"
 ```
 
-Another thing to know is that Github Actions can be used to build on the three most common (consumer) platforms: Linux, macOS, and Windows. In the ```jobs``` section of the markup you will see the matrix. Really you will, and it defines which versions of each OS to build on.
+Another thing to know is that Github Actions can be used to build on the three most common (consumer) platforms: Linux, macOS, and Windows. In the ```jobs``` section of the markup you will see the matrix. Really you will, and it defines which versions of each OS to build on. Nobody can be told what the matrix is, you have to see it for yourself. 
 
 ```
 name: ${{ matrix.config.name }}
@@ -81,6 +85,7 @@ Not all companies build their products for cross-platform use, but then the worl
 
 Anyway, there is a ```steps``` section that runs the commands to build the application and run the tests, listed below.  Each of these has a name, a command that is run, and an option to choose the shell that the command is run in.
 
+* *CPrint runner.os, etc.*
 * *Create Build Environment*
 * *Configure CMake*
 * *Build*
@@ -89,7 +94,7 @@ Anyway, there is a ```steps``` section that runs the commands to build the appli
 * *Archive Artifacts <for some platform>*
 * *Release Artifacts <for all platforms>*
 
-In this case, we aren't deploying the application to server to run. That could be done, of course, but costs money and Github lets us create releases which are downloadable so that is the option chosen here.
+In this case, we aren't deploying (a.k.a. copying) the application files to a server to be run. That could be done, of course, but it would cost money and Github lets us create releases which are downloadable for free so that is the option chosen here.
 
 By the way, cleaning up the environment is taken care of by Github, so there is no configuration we are responsible for.
 
@@ -97,7 +102,7 @@ By the way, cleaning up the environment is taken care of by Github, so there is 
 
 Since we are not doing this together, let's look at the feedback Github Actions provided when the code was uploaded to Github.
 
-But, before we do, we need to tag the code (i.e., give it a version number). As mentioned earlier, this will be used by the Github Action workflow to determine if it needs to run.
+But, before we do, we need to tag the code (i.e., give it a version number). As mentioned earlier, this will be used by the Github Action to determine if it needs to run the workflow.
 
 A Git command is used to tag the code. The tag is just a string, so it could be something like **v1.0.0**. Tags are *not* pushed the same way that code is, so it is necessary to explicitly push them.
 
@@ -109,16 +114,14 @@ git commit -m "<text>"
 git push origin
 ```
 
-The following commands can be used to initiate a release of the code that is already checked in.
+The following commands can be used to initiate a release of the code that is already checked in. Remember, the yaml file defines when to run the commands it contains as anytime the tag is updated, so using the commands below will trigger the process to begin.
 
 ```
 git tag <tagname>
 git push origin --tags
 ```
 
-Remember, the yaml file defines the time to run the commands it contains as anytime new or changed files are merged into the repo (in Github). *Yes, I know I did.*
-
-In Github, things are a bit slow. Well, it is free so it is probably wrong to complain too much. The upside of slowness is that we can see the process as it happens.
+In Github, things are much slower than doing the same things locally. It is free so it is probably wrong to complain too much. The upside of slowness is that we can see the process as it happens.
 
 Here is the job running - 
 
@@ -136,11 +139,9 @@ Github shows nice green and red icons to describe what went well and what did no
 
 ![Failure](img/github_tests_summary.png)
 
-If you want to see more details about what happened in this situation, click on **Actions**.  You will probably see one (or more) additional set of tests because this document was completed after the checkin described above.
+If you want to see the workflows and details about what happened during them, click on **Actions**.
 
 ![Failure](img/github_actions_link.png)
-
-To have a release created by Github the yaml should define the build type as ```Release``` and a step like ```Create Release``` in this project's yaml file. Have a look there; it is pretty simple.
 
 ## Interesting, maybe not obvious
 
