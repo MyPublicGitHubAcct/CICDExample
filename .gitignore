@@ -52,12 +52,20 @@
 **/_builds/
 **/Builds/
 
+# Old Framework files
+# VST2_SDK/pluginterfaces/*
+# VST2_SDK/public.sdk/*
+
 # cmake
 **/build/
+**/Build/
 
-# python checkpoints
+# python
 **/*.ipynb_checkpoints/
 *.ipynb_checkpoint
+*/venv/**
+venv/
+__pycache__
 
 # max msp
 gen_dsp/*

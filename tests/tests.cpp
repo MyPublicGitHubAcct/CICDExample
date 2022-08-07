@@ -1,4 +1,4 @@
-#include "catch2/catch.hpp"
+#include <catch2/catch_all.hpp>
 #include "../src/main.h"
 
 TEST_CASE("one is equal to one", "[dummy]")
