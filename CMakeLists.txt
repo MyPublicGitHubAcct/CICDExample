@@ -41,7 +41,7 @@ source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/tests PREFIX "" FILES ${TestFiles}
 
 include(${Catch2_SOURCE_DIR}/extras/Catch.cmake)
 
-if(UNIX AND NOT APPLE)
+if(NOT APPLE)
     message(STATUS "Running unit tests on Linux")
     catch_discover_tests("${BaseTargetName}_tests")
 endif()
