@@ -38,6 +38,14 @@ jobs:
           echo 'matrix.os.runner == ${{ matrix.os.runner }}';
           echo 'github.workspace == ${{ github.workspace }}'
 
+      - name: Get latest CMake
+        uses: lukka/get-cmake@latest
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
       - name: Create Build Environment
         run: cmake -E make_directory ${{ runner.workspace }}/build
 
