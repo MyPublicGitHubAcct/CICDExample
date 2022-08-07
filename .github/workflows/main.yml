@@ -44,8 +44,13 @@ jobs:
       - name: Configure CMake
         shell: bash
         working-directory: ${{ runner.workspace }}/build
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE;
-          echo "$(</home/runner/work/CICDExample/build/CMakeFiles/CMakeOutput.log)"
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+
+      - name: Read log file
+        shell: bash
+        if: startsWith(matrix.os.runner, 'ubuntu')
+        working-directory: ${{ runner.workspace }}/build
+        run: echo "$(</home/runner/work/CICDExample/build/CMakeFiles/CMakeOutput.log)"
 
       - name: Build
         working-directory: ${{ runner.workspace }}/build
