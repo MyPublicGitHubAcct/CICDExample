@@ -40,4 +40,10 @@ target_link_libraries("${BaseTargetName}_tests"
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/tests PREFIX "" FILES ${TestFiles})
 
 include(${Catch2_SOURCE_DIR}/extras/Catch.cmake)
+
+if(UNIX AND NOT APPLE)
+    message(STATUS "Running unit tests on Linux")
+    catch_discover_tests("${BaseTargetName}_tests")
+endif()
+
 # catch_discover_tests("${BaseTargetName}_tests") # need to sign before run on macOS 12+
