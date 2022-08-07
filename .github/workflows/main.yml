@@ -44,13 +44,13 @@ jobs:
       - name: Configure CMake
         shell: bash
         working-directory: ${{ runner.workspace }}/build
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-
-      - name: Read log file
-        shell: bash
-        if: startsWith(matrix.os.runner, 'ubuntu')
-        working-directory: ${{ runner.workspace }}/build
-        run: echo "$(</home/runner/work/CICDExample/build/CMakeFiles/CMakeOutput.log)"
+        run: |
+          cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+          mkdir ${{ github.workspace }}/CMakeLog-${{ runner.os }}
+          mv ${{ runner.workspace }}/CICDExample/libs/Catch2 ${{ github.workspace }}/CMakeLog-${{ runner.os }}/Catch2_${{ runner.os }};
+          ls -Rla > ${{ github.workspace }}/CMakeLog-${{ runner.os }}/listing_${{ runner.os }}.txt;
+          cd ${{ github.workspace }}
+          zip -r -q CMakeLog-${{ runner.os }}.zip CMakeLog-${{ runner.os }}
 
       - name: Build
         working-directory: ${{ runner.workspace }}/build
