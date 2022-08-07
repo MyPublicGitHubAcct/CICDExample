@@ -44,16 +44,7 @@ jobs:
       - name: Configure CMake
         shell: bash
         working-directory: ${{ runner.workspace }}/build
-        run: |
-          cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-         # remove all that is below later
-          mkdir ${{ github.workspace }}/CMakeLog-${{ runner.os }}
-         #mv ${{ runner.workspace }}/build/HelloWorld_tests ${{ github.workspace }}/HelloWorld-${{ runner.os }}/HelloWorld_tests_${{ runner.os }};
-          mv ${{ runner.workspace }}/build/CMakeFiles/CMakeOutput.log ${{ github.workspace }}/CMakeLog-${{ runner.os }}/CMakeFiles/CMakeOutput.log_${{ runner.os }};
-         #ls -Rla > ${{ github.workspace }}/HelloWorld-${{ runner.os }}/listing_${{ runner.os }}.txt;
-          ls -Rla > ${{ github.workspace }}/CMakeLog-${{ runner.os }}/listing_${{ runner.os }}.txt;
-          cd ${{ github.workspace }}
-          zip -r -q CMakeLog-${{ runner.os }}.zip CMakeLog-${{ runner.os }}
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
 
       - name: Build
         working-directory: ${{ runner.workspace }}/build
