@@ -11,7 +11,8 @@ project(${BaseTargetName} VERSION 1.0.0)
 #     GIT_TAG        v3.1.0)
 # FetchContent_MakeAvailable(Catch2)
 
-add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/libs/Catch2)
+# add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/libs/Catch2)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/libs/Catch2)
 
 set(CMAKE_CXX_STANDARD 20)
 
